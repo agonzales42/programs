@@ -1,0 +1,22 @@
+<project name = "WebServer" default = "compile" basedir = ".">
+    
+    <!-- Compiles java files -->
+    <target name = "compile">
+        <javac srcdir = "."  includeantruntime = "false"/>
+    </target>
+    
+    <!-- Clean -> Compile -> Run -->
+    <target name = "run" depends = "compile" >
+        <java classname = "WebServer" fork = "true"/>
+    </target>
+    
+    <!-- Cleans class files -->
+    <target name = "clean">
+        <delete>
+            <fileset dir = ".">
+                <include name="*.class"/>
+            </fileset>
+        </delete>
+    </target>
+    
+</project>
