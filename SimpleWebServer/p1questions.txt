@@ -1,0 +1,23 @@
+Program 1 Questions:
+1.) Estimate the time it will take you to do the assignment, to within a quarter-hour:
+
+	3.5 hours.
+
+2.) Estimate the time it took you to complete the assignment..
+
+	Thought/Design: 3 hours
+	Programming: 2.5 hours
+	Debugging: 1.5 hours
+	TOTAL: 7 hours
+
+3.) Percent accuracy:
+	
+	50%
+
+
+Also:
+	I am working on a Windows machine in Visual Studio Code, as opposed to Eclipse,
+	and due to poor time estimation and my unfamiliarity with ant,
+	I was unable to test build.xml (But I did give it a serious try).
+	The build file I have provided is based on a sample that combines examples
+	from classmates and online manuals and forums.
