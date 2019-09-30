@@ -1,0 +1,8 @@
+1.) Assignment should take 3 hours
+2.)
+Thought:     2 hour
+Programming: 15 minutes
+Debugging:   15 minutes
+Total:       2 and a half hours
+
+3.) 83% accuracy
