@@ -89,6 +89,7 @@ public static void main(String args[])
    }
    WebServer server = new WebServer();
    System.out.println("Waiting for request . . . ");
+   System.err.println("port: " + port);
    if (!server.start(port)) {
       System.err.println("Execution failed!");
    }
