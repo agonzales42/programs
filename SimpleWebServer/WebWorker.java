@@ -155,14 +155,14 @@ private void writeContent(OutputStream os, String path, String contentType) thro
             content += df.format(d);
          }else if(content.contains("<cs371server>")) {
             // substitute <cs371server> with personalized server name tag
-            content += "i-cant-believe-this-works.alex.gov";
+            content += "\ni-cant-believe-this-works.alex.gov";
          }
          os.write(content.getBytes());
          os.write("\n".getBytes());
       }
    }else if(contentType.contains("image")) {
       FileInputStream imgIn = new FileInputStream(fname);
-      byte imgArr[] = new byte [(int) fname.length()];
+      byte imgArr[] = new byte [(int) fname.length()]; // convert image to bytes
       imgIn.read(imgArr);
       DataOutputStream imgOut = new DataOutputStream(os);
       imgOut.write(imgArr);
