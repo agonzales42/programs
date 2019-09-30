@@ -52,8 +52,15 @@ public void run()
    try {
       InputStream  is = socket.getInputStream();
       OutputStream os = socket.getOutputStream();
-      writeHTTPHeader(os,"text/html");
-      writeContent(os, readHTTPRequest(is));
+      String url = "" + readHTTPRequest(is);
+      String ContentType = "";
+      if(url.contains(".jpg")) ContentType += "image/jpeg"; 
+      else if(url.contains(".png")) ContentType += "image/png";
+      else if(url.contains(".gif")) ContentType += "image/gif";
+      else if(url.contains(".ico")) ContentType += "image/x-icon";
+      else ContentType += "text/html";
+      writeHTTPHeader(os, ContentType);
+      writeContent(os, url, ContentType);
       os.flush();
       socket.close();
    } catch (Exception e) {
@@ -62,6 +69,7 @@ public void run()
    System.err.println("Done handling connection.");
    return;
 }
+
 
 /**
 * Read the HTTP request header.
@@ -112,8 +120,6 @@ private void writeHTTPHeader(OutputStream os, String contentType) throws Excepti
    os.write((df.format(d)).getBytes());
    os.write("\n".getBytes());
    os.write("Server: Alex's very own server\n".getBytes());
-   //os.write("Last-Modified: Wed, 08 Jan 2003 23:11:55 GMT\n".getBytes());
-   //os.write("Content-Length: 438\n".getBytes()); 
    os.write("Connection: close\n".getBytes());
    os.write("Content-Type: ".getBytes());
    os.write(contentType.getBytes());
@@ -126,7 +132,7 @@ private void writeHTTPHeader(OutputStream os, String contentType) throws Excepti
 * @param os is the OutputStream object to write to
 * @param path is the full path to file as a String
 **/
-private void writeContent(OutputStream os, String path) throws Exception
+private void writeContent(OutputStream os, String path, String contentType) throws Exception
 {
    File fname;   // the html file to read from
    String content = ""; // the content of fname
@@ -138,20 +144,28 @@ private void writeContent(OutputStream os, String path) throws Exception
       buffer = new BufferedReader(new FileReader(fname));
    }catch (FileNotFoundException e) {
       os.write("<html>".getBytes());
-      os.write("<body><h3>404 ot found</h3></body>".getBytes());
+      os.write("<body><h3>404 not found</h3></body>".getBytes());
       os.write("</html>".getBytes());
       throw e;
    }
-   while ((content = buffer.readLine()) != null) {
-      if(content.contains("<cs371date>")) {
-         // substitute <cs371date> with date tag
-         content += df.format(d);  
-      }else if(content.contains("<cs371server>")) {
-         // substitute <cs371server> with personalized server name tag
-         content += "i-cant-believe-this-works.alex.gov";
+   if(contentType.equals("text/html")) {
+      while ((content = buffer.readLine()) != null) {
+         if(content.contains("<cs371date>")) {
+            // substitute <cs371date> with date tag
+            content += df.format(d);
+         }else if(content.contains("<cs371server>")) {
+            // substitute <cs371server> with personalized server name tag
+            content += "i-cant-believe-this-works.alex.gov";
+         }
+         os.write(content.getBytes());
+         os.write("\n".getBytes());
       }
-      os.write(content.getBytes());
-      os.write("\n".getBytes());
+   }else if(contentType.contains("image")) {
+      FileInputStream imgIn = new FileInputStream(fname);
+      byte imgArr[] = new byte [(int) fname.length()];
+      imgIn.read(imgArr);
+      DataOutputStream imgOut = new DataOutputStream(os);
+      imgOut.write(imgArr);
    }
 }
 
